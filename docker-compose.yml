@@ -1,0 +1,7 @@
+services:
+  neovim:
+    build: .
+    volumes:
+      - ./config/nvim:/home/developer/.config/nvim
+    tty: true
+    stdin_open: true
