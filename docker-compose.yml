@@ -1,7 +1,9 @@
 services:
-  neovim:
+  egovim:
+    container_name: egovim
     build: .
     volumes:
       - ./config/nvim:/home/developer/.config/nvim
+    image: egovim:latest
     tty: true
     stdin_open: true

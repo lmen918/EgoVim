@@ -1,8 +1,4 @@
-FROM archlinux:base-devel
-
-# Create a non-root user
-RUN useradd -m developer && \
-    echo "developer ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+FROM archlinux/archlinux:latest
 
 # Update system and install required packages
 RUN pacman -Syu --noconfirm && \
@@ -11,6 +7,7 @@ RUN pacman -Syu --noconfirm && \
     neovim \
     nodejs \
     npm \
+    gcc \
     python \
     python-pip \
     python-pynvim \
@@ -23,6 +20,10 @@ RUN pacman -Syu --noconfirm && \
     sudo
 # Set up language servers and tools
 RUN npm install -g typescript typescript-language-server prettier neovim
+
+# Create a non-root user
+RUN useradd -m developer && \
+    echo "developer ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers \
 
 # Set working directory
 WORKDIR /home/developer
