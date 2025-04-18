@@ -41,17 +41,16 @@ RUN pacman -Syu --noconfirm && \
     # Clipboard support
     xclip \
     wl-clipboard \
-    sudo
+    sudo \
 # Set up language servers and tools
-RUN npm install -g typescript typescript-language-server prettier neovim
-
+&& npm install -g typescript typescript-language-server prettier neovim \
 # Create a non-root user
-RUN useradd -m developer && \
+&& useradd -m developer && \
     echo "developer ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers \
 
 # Set working directory
 WORKDIR /home/developer
-USER developer
+USER developer \
 
 # Make Neovim directory to mount the github repository config to
-RUN mkdir -p ~/.config/nvim
+&& mkdir -p ~/.config/nvim

@@ -1,3 +1,4 @@
+--region Intro
 --[[
 
 =====================================================================
@@ -83,7 +84,9 @@ I hope you enjoy your Neovim journey,
 
 P.S. You can delete this when you're done too. It's your config now! :)
 --]]
+--endregion Intro
 
+--region Globals
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
@@ -92,7 +95,9 @@ vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = false
+--endregion Globals
 
+--region Basic-Options
 -- [[ Setting options ]]
 -- See `:help vim.opt`
 -- NOTE: You can change these options as you wish!
@@ -160,7 +165,9 @@ vim.opt.scrolloff = 10
 -- instead raise a dialog asking if you wish to save the current file(s)
 -- See `:help 'confirm'`
 vim.opt.confirm = true
+--endregion Basic-Options
 
+--region Basic-Keymaps
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -199,10 +206,12 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
 -- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
 -- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
+--endregion Basic-Keymaps
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
+--region TextYankPost
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
 --  See `:help vim.highlight.on_yank()`
@@ -213,7 +222,9 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     vim.highlight.on_yank()
   end,
 })
+--endregion TextYankPost
 
+--region Plugin-Manager
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
@@ -225,30 +236,33 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
   end
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
+--endregion Plugin-Manager
 
 -- [[ Configure and install plugins ]]
---
+
 --  To check the current status of your plugins, run
 --    :Lazy
---
+
 --  You can press `?` in this menu for help. Use `:q` to close the window
---
+
 --  To update plugins you can run
 --    :Lazy update
---
+
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'folke/lazy.nvim', -- plugin manager
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   'nvimdev/dashboard-nvim', -- A dashboard for neovim
+  'williamboman/mason.nvim', -- Mason for LSP
+
+  -- vim.cmd.colorscheme("solarized-osaka")
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
   -- keys can be used to configure plugin behavior/loading/etc.
-  --
+
   -- Use `opts = {}` to automatically pass options to a plugin's `setup()` function, forcing the plugin to be loaded.
-  --
 
   -- Alternatively, use `config = function() ... end` for full control over the configuration.
   -- If you prefer to call `setup` explicitly, use:
@@ -260,10 +274,10 @@ require('lazy').setup({
   --            })
   --        end,
   --    }
-  --
   -- Here is a more advanced example where we pass configuration
   -- options to `gitsigns.nvim`.
-  --
+
+  --region Gitsigns
   -- See `:help gitsigns` to understand what the configuration keys do
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -277,21 +291,23 @@ require('lazy').setup({
       },
     },
   },
+  --endregion Gitsigns
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
-  --
+
   -- This is often very useful to both group configuration, as well as handle
   -- lazy loading plugins that don't need to be loaded immediately at startup.
-  --
+
   -- For example, in the following configuration, we use:
   --  event = 'VimEnter'
-  --
+
   -- which loads which-key before all the UI elements are loaded. Events can be
   -- normal autocommands events (`:help autocmd-events`).
-  --
+
   -- Then, because we use the `opts` key (recommended), the configuration runs
   -- after the plugin has been loaded as `require(MODULE).setup(opts)`.
 
+  --region Which-key
   { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
@@ -344,14 +360,16 @@ require('lazy').setup({
       },
     },
   },
+  --endregion Which-key
 
   -- NOTE: Plugins can specify dependencies.
-  --
+
   -- The dependencies are proper plugin specifications as well - anything
   -- you do for a plugin at the top level, you can do for a dependency.
-  --
+
   -- Use the `dependencies` key to specify the dependencies of a particular plugin
 
+  --region Telescope-fuzzy-finder
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
     event = 'VimEnter',
@@ -455,8 +473,9 @@ require('lazy').setup({
       end, { desc = '[S]earch [N]eovim files' })
     end,
   },
+  --endregion Telescope-fuzzy-finder
 
-  -- LSP Plugins
+  --region LSP-Plugins
   {
     -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
     -- used for completion, annotations and signatures of Neovim apis
@@ -469,8 +488,10 @@ require('lazy').setup({
       },
     },
   },
+  --endregion LSP-Plugins
+
+  --region Main-LSP-Configuration
   {
-    -- Main LSP Configuration
     'neovim/nvim-lspconfig',
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
@@ -729,8 +750,10 @@ require('lazy').setup({
       }
     end,
   },
+  --endregion Main-LSP-Configuration
 
-  { -- Autoformat
+  --region Autoformat
+  {
     'stevearc/conform.nvim',
     event = { 'BufWritePre' },
     cmd = { 'ConformInfo' },
@@ -770,8 +793,10 @@ require('lazy').setup({
       },
     },
   },
+  --endregion Autoformat
 
-  { -- Autocompletion
+  --region Autocompletion
+  {
     'saghen/blink.cmp',
     event = 'VimEnter',
     version = '1.*',
@@ -869,7 +894,9 @@ require('lazy').setup({
       signature = { enabled = true },
     },
   },
+  --endregion Autocompletion
 
+  --region Colorscheme
   { -- You can easily change to a different colorscheme.
     -- Change the name of the colorscheme plugin below, and then
     -- change the command in the config to whatever the name of that colorscheme is.
@@ -891,11 +918,13 @@ require('lazy').setup({
       vim.cmd.colorscheme 'tokyonight-night'
     end,
   },
+  --endregion Colorscheme
 
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
-  { -- Collection of various small independent plugins/modules
+  --region Collection-of-various-small-independent-plugins/modules
+  {
     'echasnovski/mini.nvim',
     config = function()
       -- Better Around/Inside textobjects
@@ -932,6 +961,9 @@ require('lazy').setup({
       --  Check out: https://github.com/echasnovski/mini.nvim
     end,
   },
+  --endregion Collection-of-various-small-independent-plugins/modules
+
+  --region Treesitter
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
@@ -957,11 +989,13 @@ require('lazy').setup({
     --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
     --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
   },
+  --endregion Treesitter
 
   -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
   -- init.lua. If you want these files, they are in the repository, so you can just download them and
   -- place them in the correct locations.
 
+  --region Kickstart-Plugins
   -- NOTE: Next step on your Neovim journey: Add/Configure additional plugins for Kickstart
   --
   --  Here are some example plugins that I've included in the Kickstart repository.
@@ -973,18 +1007,22 @@ require('lazy').setup({
   -- require 'kickstart.plugins.autopairs',
   -- require 'kickstart.plugins.neo-tree',
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
+  --endregion Kickstart-Plugins
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
-  --
+
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-  -- { import = 'custom.plugins' },
-  --
+  { import = 'custom.plugins' },
+
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
   -- Or use telescope!
   -- In normal mode type `<space>sh` then write `lazy.nvim-plugin`
   -- you can continue same window with `<space>sr` which resumes last telescope search
-}, {
+},
+
+--region UI-Font
+{
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
     -- default lazy.nvim defined Nerd Font icons, otherwise define a unicode icons table
@@ -1004,7 +1042,72 @@ require('lazy').setup({
       lazy = '💤 ',
     },
   },
+}
+--endregion UI-Font
+)
+
+
+-- Disable the concealing in some file formats
+-- The default conceallevel is 3 in LazyVim
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "json", "jsonc", "markdown" },
+	callback = function()
+		vim.wo.conceallevel = 0
+	end,
 })
 
+-- require("luarocks-nvim").setup()
+
+--local vim = vim
+--local Plug = vim.fn['plug#']
+
+--vim.call('plug#begin')
+
+-- Shorthand notation for GitHub; translates to https://github.com/junegunn/seoul256.vim.git
+--Plug('junegunn/seoul256.vim')
+
+-- Any valid git URL is allowed
+--Plug('https://github.com/junegunn/vim-easy-align.git')
+
+-- Using a tagged release; wildcard allowed (requires git 1.9.2 or above)
+----i----Plug('fatih/vim-go', { ['tag'] = '*' })
+
+-- Using a non-default branch
+--Plug('neoclide/coc.nvim', { ['branch'] = 'release' })
+
+-- Use 'dir' option to install plugin in a non-default directory
+--Plug('junegunn/fzf', { ['dir'] = '~/.fzf' })
+
+-- Post-update hook: run a shell command after installing or updating the plugin
+--Plug('junegunn/fzf', { ['dir'] = '~/.fzf', ['do'] = './install --all' })
+
+-- Post-update hook can be a lambda expression
+--Plug('junegunn/fzf', { ['do'] = function()
+--  vim.fn['fzf#install']()
+--end })
+
+-- If the vim plugin is in a subdirectory, use 'rtp' option to specify its path
+--Plug('nsf/gocode', { ['rtp'] = 'vim' })
+
+-- On-demand loading: loaded when the specified command is executed
+--Plug('preservim/nerdtree', { ['on'] = 'NERDTreeToggle' })
+
+-- On-demand loading: loaded when a file with a specific file type is opened
+--Plug('tpope/vim-fireplace', { ['for'] = 'clojure' })
+--Plug('tpope/vim-fugitive', { ['branch'] = 'master'})
+
+-- Unmanaged plugin (manually installed and updated)
+--Plug('~/my-prototype-plugin')
+
+--Use release branch (recommended)
+--Plug('neoclide/coc.nvim', { ['branch'] = 'release'})
+
+--Plug('preservim/nerdtree')
+
+--vim.call('plug#end')
+
+-- Color schemes should be loaded after plug#end().
+-- We prepend it with 'silent!' to ignore errors when it's not yet installed.
+--vim.cmd('silent! colorscheme seoul256')
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
