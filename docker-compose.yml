@@ -4,6 +4,7 @@ services:
     build: .
     volumes:
       - ./config/nvim:/home/developer/.config/nvim
+      - ../:/home/developer/projects
     image: egovim:latest
     user: developer
     tty: true
