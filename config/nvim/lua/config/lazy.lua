@@ -5,7 +5,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
     if vim.v.shell_error ~= 0 then
         vim.api.nvim_echo({
             { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-            { out,                            "WarningMsg" },
+            { out, "WarningMsg" },
             { "\nPress any key to exit..." },
         }, true, {})
         vim.fn.getchar()
@@ -17,18 +17,7 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
     spec = {
         -- add LazyVim and import its plugins
-        {
-          "LazyVim/LazyVim",
-          import = "lazyvim.plugins",
-          opts = {
-            extras = {
-              dashboard = false, -- Explicitly DISABLE the default dashboard extra
-              -- You can add other extras here to enable them, e.g.:
-              -- ["lazyvim.plugins.extras.lang.typescript"] = true,
-              -- ["lazyvim.plugins.extras.ui.mini-indentscope"] = true,
-            },
-          },
-        },
+        { "LazyVim/LazyVim", import = "lazyvim.plugins" },
         -- import/override with your plugins
         { import = "plugins" },
     },
@@ -41,11 +30,11 @@ require("lazy").setup({
         version = false, -- always use the latest git commit
         -- version = "*", -- try installing the latest stable version for plugins that support semver
     },
-    install = { colorscheme = { "solarized-osaka", "tokyonight", "habamax" } },
+    install = { colorscheme = { "tokyonight", "habamax" } },
     checker = {
         enabled = true, -- check for plugin updates periodically
         notify = false, -- notify on update
-    },              -- automatically check for plugin updates
+    }, -- automatically check for plugin updates
     performance = {
         rtp = {
             -- disable some rtp plugins

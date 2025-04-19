@@ -19,7 +19,7 @@ map("n", "<leader>ls", "<cmd>LiveServerStart<CR>", { desc = "Start Live Server" 
 map("n", "<leader>lS", "<cmd>LiveServerStop<CR>", { desc = "Stop Live Server" })
 
 -- lspimport
-vim.keymap.set("n", "<leader>a", require("lspimport").import, { noremap = true })
+--vim.keymap.set("n", "<leader>a", require("lspimport").import, { noremap = true })
 
 -- Add keymaps after Neovim has loaded
 vim.api.nvim_create_autocmd("LspAttach", {
