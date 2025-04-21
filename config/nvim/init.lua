@@ -120,7 +120,7 @@ vim.opt.showmode = false
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
 vim.schedule(function()
-  vim.opt.clipboard = 'unnamedplus'
+    vim.opt.clipboard = 'unnamedplus'
 end)
 
 -- Enable break indent
@@ -216,11 +216,11 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 --  Try it with `yap` in normal mode
 --  See `:help vim.highlight.on_yank()`
 vim.api.nvim_create_autocmd('TextYankPost', {
-  desc = 'Highlight when yanking (copying) text',
-  group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
-  callback = function()
-    vim.highlight.on_yank()
-  end,
+    desc = 'Highlight when yanking (copying) text',
+    group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
+    callback = function()
+        vim.highlight.on_yank()
+    end,
 })
 --endregion TextYankPost
 
@@ -229,6 +229,8 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 -- bootstrap lazy.nvim, LazyVim and your plugins
 require 'config.lazy'
+vim.o.background = "dark"
+vim.cmd.colorscheme("gruvbox")
 --endregion Plugin-Manager
 
 -- [[ Configure and install plugins ]]
@@ -315,10 +317,10 @@ require 'config.lazy'
 -- Disable the concealing in some file formats
 -- The default conceallevel is 3 in LazyVim
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'json', 'jsonc', 'markdown' },
-  callback = function()
-    vim.wo.conceallevel = 0
-  end,
+    pattern = { 'json', 'jsonc', 'markdown' },
+    callback = function()
+        vim.wo.conceallevel = 0
+    end,
 })
 
 -- require("luarocks-nvim").setup()
@@ -376,4 +378,3 @@ vim.api.nvim_create_autocmd('FileType', {
 --vim.cmd('silent! colorscheme seoul256')
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
-
