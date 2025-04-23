@@ -9,6 +9,7 @@ RUN pacman -Syu --noconfirm && \
     ripgrep \
     # Lua requirements
     luarocks \
+    lua51 \
     # Mason requirements \
     cargo \
     cmake \
